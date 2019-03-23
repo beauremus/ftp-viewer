@@ -25,9 +25,9 @@ class Canvas extends Component {
         const pointsPerPixel = 1; // TODO: This should be a prop
 
         if (i === 0) {
-          this.ctx.moveTo(i * pointsPerPixel, y * 20 - 800);
+          this.ctx.moveTo(this.props.xScale(i), this.props.yScale(y));
         } else {
-          this.ctx.lineTo(i * pointsPerPixel, y * 20 - 800);
+          this.ctx.lineTo(this.props.xScale(i), this.props.yScale(y));
         }
       })
     } else if (typeof data === "object") {

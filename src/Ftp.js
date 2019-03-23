@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
+import { scaleLinear, scaleTime } from "d3-scale";
+import { max } from "d3-array";
+import { timeMinute } from "d3-time";
 import Animation from './Animation';
+import Axes from './Axes';
+import './Ftp.css';
+
+const margin = { top: 20, right: 15, bottom: 60, left: 70 };
+const outerWidth = 800;
+const outerHeight = 600;
+const width = outerWidth - margin.left - margin.right;
+const height = outerHeight - margin.top - margin.bottom;
 
 class Ftp extends Component {
   constructor(props) {
@@ -11,16 +22,29 @@ class Ftp extends Component {
       isLoading: false,
       error: null,
     };
+
+    this.date = new Date()
+
+    this.x = scaleTime()
+      .domain([0, width])
+      .range([0, width]);
+    this.y = scaleLinear()
+      .domain([0, 60.2])
+      .range([height, 0])
+      .nice();
   }
 
   componentWillReceiveProps() {
     const { data: newData, info: newInfo } = this.props.data;
 
+    // console.log(this.x(new Date(newData.timestamp)) + 390)
+    // console.log(this.y(newData.data));
+
     this.setState(({ data }) => {
       let combinedData = data.slice(); // Copy Array
-      combinedData.push({ x: newData.timestamp, y: newData.data });
-      if (combinedData.length > 800) {
-        combinedData = combinedData.slice(800 / 4);
+      combinedData.push({ x: new Date(newData.timestamp + 390), y: newData.data });
+      if (combinedData.length > width) {
+        combinedData = combinedData.slice(width / 4);
       }
       return {
         data: combinedData,
@@ -30,11 +54,27 @@ class Ftp extends Component {
   }
 
   render() {
-    return <Animation
-      width={this.props.width}
-      height={this.props.height}
-      data={this.state.data}
-    />;
+    return (
+      <div className="scatter-container">
+        <Axes
+          width={outerWidth} // {this.props.width}
+          height={outerHeight} // {this.props.height}
+          margin={margin}
+          data={this.state.data}
+        />
+        <Animation
+          xScale={this.x}
+          yScale={this.y}
+          width={width} // {this.props.width}
+          height={height} // {this.props.height}
+          style={{
+            "margin-left": `${margin.left}px`,
+            "margin-top": `${margin.top}px`
+          }}
+          data={this.state.data}
+        />
+      </div>
+    );
   }
 }
 
