@@ -57,19 +57,23 @@ class Ftp extends Component {
     return (
       <div className="scatter-container">
         <Axes
+          x={margin.left}
+          y={margin.top}
           width={outerWidth} // {this.props.width}
           height={outerHeight} // {this.props.height}
+          innerHeight={height}
+          innerWidth={width}
           margin={margin}
           data={this.state.data}
         />
         <Animation
-          xScale={this.x}
-          yScale={this.y}
+          xscale={this.x}
+          yscale={this.y}
           width={width} // {this.props.width}
           height={height} // {this.props.height}
           style={{
-            "margin-left": `${margin.left}px`,
-            "margin-top": `${margin.top}px`
+            marginLeft: `${margin.left}px`,
+            marginTop: `${margin.top}px`
           }}
           data={this.state.data}
         />

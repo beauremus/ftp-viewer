@@ -6,13 +6,15 @@ class PureCanvas extends Component {
   }
 
   render() {
+    const { width, height, contextRef, style } = this.props;
     return (
       <canvas
-        width={this.props.width}
-        height={this.props.height}
+        width={width}
+        height={height}
         ref={node =>
-          node ? this.props.contextRef(node.getContext('2d')) : null
+          node ? contextRef(node.getContext('2d')) : null
         }
+        style={style}
       />
     );
   }

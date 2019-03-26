@@ -25,12 +25,13 @@ class Canvas extends Component {
         const pointsPerPixel = 1; // TODO: This should be a prop
 
         if (i === 0) {
-          this.ctx.moveTo(this.props.xScale(i), this.props.yScale(y));
+          this.ctx.moveTo(this.props.xscale(i), this.props.yscale(y));
         } else {
-          this.ctx.lineTo(this.props.xScale(i), this.props.yScale(y));
+          this.ctx.lineTo(this.props.xscale(i), this.props.yscale(y));
         }
       })
     } else if (typeof data === "object") {
+      if (!data) return;
       const values = Object.values(data);
       values.forEach(localData => {
         localData.forEach(({ x, y }, i) => {
@@ -51,11 +52,13 @@ class Canvas extends Component {
   }
 
   render() {
+    const { width, height, ...otherProps } = this.props;
     return (
       <PureCanvas
         contextRef={this.saveContext}
-        width={this.props.width}
-        height={this.props.height}
+        width={width}
+        height={height}
+        {...otherProps}
       />
     );
   }
