@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as d3 from "d3-shape";
 import PureCanvas from './PureCanvas';
 
 class Canvas extends Component {
@@ -15,21 +16,28 @@ class Canvas extends Component {
     const { data, maxLength } = this.props;
     const width = this.ctx.canvas.width;
     const height = this.ctx.canvas.height;
+    let path = new Path2D();
     this.ctx.save();
-    this.ctx.beginPath();
+    // this.ctx.beginPath();
     this.ctx.clearRect(0, 0, width, height);
 
     if (Array.isArray(data)) { // This must come first; typeof Array == "object"
-      data.forEach(({ x, y }, i) => {
-        const length = maxLength;
-        const pointsPerPixel = 1; // TODO: This should be a prop
+      const curve = d3.line()
+        // .curve(d3.curveMonotoneX)
+        .x(d => this.props.xscale(d.x))
+        .y(d => this.props.yscale(d.y));
 
-        if (i === 0) {
-          this.ctx.moveTo(this.props.xscale(i), this.props.yscale(y));
-        } else {
-          this.ctx.lineTo(this.props.xscale(i), this.props.yscale(y));
-        }
-      })
+      path = new Path2D(curve(data));
+      // data.forEach(({ x, y }, i) => {
+      //   const length = maxLength;
+      //   const pointsPerPixel = 1; // TODO: This should be a prop
+
+      //   if (i === 0) {
+      //     this.ctx.moveTo(this.props.xscale(x), this.props.yscale(y));
+      //   } else {
+      //     this.ctx.lineTo(this.props.xscale(x), this.props.yscale(y));
+      //   }
+      // })
     } else if (typeof data === "object") {
       if (!data) return;
       const values = Object.values(data);
@@ -47,7 +55,7 @@ class Canvas extends Component {
     }
 
     this.ctx.strokeStyle = "red";
-    this.ctx.stroke();
+    this.ctx.stroke(path);
     this.ctx.restore();
   }
 
