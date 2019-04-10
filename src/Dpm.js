@@ -11,7 +11,7 @@ class Dpm extends Component {
       error: null,
     };
 
-    this.dpm = new window.DPM();
+    this.dpm = new window.DPM("DPMJ@VIRT01");
 
     this.addRequest = drfString => {
       this.dpm.addRequest(drfString, (data, info) => {
@@ -44,7 +44,7 @@ class Dpm extends Component {
 
   componentDidMount() {
     this.setState({ isLoading: true });
-    this.dpm.start();
+    this.dpm.start("FTP");
   }
 
   render() {

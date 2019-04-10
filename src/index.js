@@ -5,7 +5,7 @@ import Dpm from './Dpm';
 import Ftp from './Ftp';
 import * as serviceWorker from './serviceWorker';
 
-const request = "G:SCTIME@P,15H";
+const request = "U:GRWD51@P,1440H";
 
 ReactDOM.render(
   <Dpm drf={request}>
