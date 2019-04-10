@@ -21,35 +21,89 @@ class Ftp extends Component {
       info: null,
       isLoading: false,
       error: null,
+      maxPoints: width / 2,
+      x: null,
+      y: null
     };
+  }
 
-    this.date = new Date()
+  getXScale(domain, advance) {
+    const plotLength = 5000000;
+    // let initialTime = (new Date()).valueOf() * 1000; // Need microseconds
+    let initialTime = null;
+    let x1 = null;
+    let x2 = null;
 
-    this.x = scaleTime()
-      .domain([0, width])
+    if (typeof domain === "number") {
+      x1 = domain;
+      x2 = domain + plotLength;
+    } else {
+      [x1, x2] = domain || [null, null];
+    }
+
+    if (advance) {
+      // initialTime = x1 + ((x2 - x1) / (1 / advance));
+      initialTime = advance;
+    } else {
+      initialTime = x1;
+    }
+
+    return scaleLinear()
+      .domain([initialTime, initialTime + plotLength])
       .range([0, width]);
-    this.y = scaleLinear()
-      .domain([0, 60.2])
+  }
+
+  getYScale() {
+    return scaleLinear()
+      .domain([-2, 2])
       .range([height, 0])
       .nice();
   }
 
   componentWillReceiveProps() {
     const { data: newData, info: newInfo } = this.props.data;
-
-    // console.log(this.x(new Date(newData.timestamp)) + 390)
-    // console.log(this.y(newData.data));
+    const dataSize = newData.data.length / 2;
+    let domainMin = null;
+    let domainMax = null;
 
     this.setState(({ data }) => {
+      const result = { info: newInfo };
       let combinedData = data.slice(); // Copy Array
-      combinedData.push({ x: new Date(newData.timestamp + 390), y: newData.data });
-      if (combinedData.length > width) {
-        combinedData = combinedData.slice(width / 4);
+
+      for (let ii = 0; ii < dataSize; ii++) {
+        combinedData.push({
+          x: newData.data[ii + dataSize],
+          y: newData.data[ii],
+        });
       }
-      return {
-        data: combinedData,
-        info: newInfo
+      // newData.data.forEach((datum, i) => {
+      //   combinedData.push({
+      //     // multiply by the frequency
+      //     x: microseconds + (i * 694),
+      //     y: datum
+      //   });
+      // });
+      result.data = combinedData;
+
+
+      if (this.state.x === null || this.state.y === null) {
+        result.x = this.getXScale(result.data[0].x);
+        result.y = this.getYScale();
+        [domainMin, domainMax] = this.getXScale(result.data[0].x).domain();
+      } else {
+        [domainMin, domainMax] = this.state.x.domain();
       }
+
+      if (result.data[result.data.length - 1].x > domainMax) {
+        result.data = result.data.slice(result.data.length / 4);
+        // console.log(`newFirstPoint: ${result.data[0].x} newX1: ${domainMin + (domainMax - domainMin) / 4}`);
+        // console.log(`Diff: ${result.data[0].x - (domainMin + (domainMax - domainMin) / 4)}`);
+        // result.x = this.getXScale([domainMin, domainMax], 1 / 4);
+        result.x = this.getXScale([domainMin, domainMax], result.data[0].x);
+        result.y = this.getYScale();
+      }
+
+      return result;
     });
   }
 
@@ -64,11 +118,12 @@ class Ftp extends Component {
           innerHeight={height}
           innerWidth={width}
           margin={margin}
+          device={this.state.info ? this.state.info.name : ""}
           data={this.state.data}
         />
         <Animation
-          xscale={this.x}
-          yscale={this.y}
+          xscale={this.state.x}
+          yscale={this.state.y}
           width={width} // {this.props.width}
           height={height} // {this.props.height}
           style={{
