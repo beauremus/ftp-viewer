@@ -26,7 +26,7 @@ class Axes extends Component {
   }
 
   render() {
-    const { x, y, data, height, width, innerHeight, innerWidth } = this.props;
+    const { x, y, data, height, width, innerHeight, innerWidth, device } = this.props;
     const { widthScale, heightScale } = this.state;
 
     return (
@@ -40,7 +40,7 @@ class Axes extends Component {
             <line x1={0} x2={0} y1={0} y2={innerHeight} stroke={"black"}></line>
           </g>
           <text x={innerWidth / 2} y={height} dy={"-2rem"} textAnchor={"middle"}>Time</text>
-          <text transform={`rotate(-90)`} x={-height / 2} y={-x} dy={"1rem"}>G:SCTIME</text>
+          <text transform={`rotate(-90)`} x={-height / 2} y={-x} dy={"1rem"}>{device}</text>
         </g>
       </svg>
     );
