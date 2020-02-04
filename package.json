@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@nivo/line": "^0.52.1",
+    "@nivo/line": "^0.61.1",
     "d3-array": "^2.0.3",
     "d3-axis": "^1.0.12",
     "d3-scale": "^3.0.0",
