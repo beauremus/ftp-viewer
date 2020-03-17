@@ -156,3 +156,11 @@ patch:
         patched: '2020-03-17T00:07:46.034Z'
     - react-scripts > jest > jest-cli > @jest/core > @jest/reporters > jest-runtime > jest-config > @jest/test-sequencer > jest-runner > jest-jasmine2 > @jest/environment > @jest/transform > @babel/core > lodash:
         patched: '2020-03-17T00:07:46.034Z'
+    - snyk > @snyk/dep-graph > lodash:
+        patched: '2020-03-17T11:25:19.369Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/dep-graph > lodash:
+        patched: '2020-03-17T11:25:19.369Z'
+    - snyk > snyk-nuget-plugin > dotnet-deps-parser > lodash:
+        patched: '2020-03-17T11:25:19.369Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/cocoapods-lockfile-parser > @snyk/dep-graph > lodash:
+        patched: '2020-03-17T11:25:19.369Z'
