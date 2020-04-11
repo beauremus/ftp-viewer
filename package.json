@@ -14,8 +14,8 @@
     "lodash": "^4.17.12",
     "nivo": "^0.31.0",
     "plotly.js": "^1.52.0",
-    "react-dom": "^16.13.0",
-    "react": "^16.13.0",
+    "react-dom": "^16.13.1",
+    "react": "^16.13.1",
     "react-plotly.js": "^2.3.0",
     "react-scripts": "3.3.0",
     "snyk": "^1.299.0"
