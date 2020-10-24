@@ -17,7 +17,7 @@
     "react-dom": "^16.13.0",
     "react": "^16.13.0",
     "react-plotly.js": "^2.3.0",
-    "react-scripts": "3.4.4",
+    "react-scripts": "4.0.0",
     "snyk": "^1.299.0"
   },
   "scripts": {
