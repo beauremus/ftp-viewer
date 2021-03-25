@@ -18,7 +18,7 @@
     "react": "^16.13.0",
     "react-plotly.js": "^2.3.0",
     "react-scripts": "4.0.0",
-    "snyk": "^1.299.0"
+    "snyk": "^1.465.0"
   },
   "scripts": {
     "start": "react-scripts start",
